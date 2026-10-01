@@ -27,3 +27,5 @@ Thumbs.db
 
 # Environment / secrets
 .env
+
+bin/
