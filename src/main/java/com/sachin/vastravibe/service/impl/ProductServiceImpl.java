@@ -1,5 +1,7 @@
 package com.sachin.vastravibe.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.sachin.vastravibe.dto.ProductDto;
@@ -22,6 +24,36 @@ public class ProductServiceImpl implements ProductService {
 		Product product = ProductMapper.mapToProduct(productDto);
 	Product savedProduct = productRepository.save(product);
 	return ProductMapper.mapToProductDto(savedProduct);
+	}
+
+	@Override
+	public List<ProductDto> getAllProducts() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProductDto getProductById(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public ProductDto updateProduct(Long id, ProductDto productDto) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void deleteProductById(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void deleteAllProducts() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
