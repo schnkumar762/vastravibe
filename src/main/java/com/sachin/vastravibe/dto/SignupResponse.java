@@ -12,5 +12,5 @@ public class SignupResponse {
     private String firstName;
     private String email;
     private String phone;
-    private String message;
+   
 }

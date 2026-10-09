@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sachin.vastravibe.dto.LoginResponse;
+import com.sachin.vastravibe.dto.LogoutRequest;
+import com.sachin.vastravibe.dto.LogoutResponse;
 import com.sachin.vastravibe.dto.SignupRequest;
 import com.sachin.vastravibe.dto.SignupResponse;
 import com.sachin.vastravibe.entity.User;
@@ -91,10 +93,17 @@ public class AuthServiceImpl implements AuthService {
 	              savedUser.getId(),
 	              savedUser.getFirstName(),
 	              savedUser.getEmail(),
-	              savedUser.getPhone(),
-	              "Signup successful"
+	              savedUser.getPhone()
+	              
 	      );
 	  }
+
+		@Override
+		public LogoutResponse logout(LogoutRequest request) {
+			  // redisTokenService.deleteToken(request.getUserId());
+			
+			   return new LogoutResponse("Logout successful");
+		}
 
 	
 	
