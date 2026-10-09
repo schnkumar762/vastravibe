@@ -100,7 +100,7 @@ public class AuthServiceImpl implements AuthService {
 
 		@Override
 		public LogoutResponse logout(LogoutRequest request) {
-			  // redisTokenService.deleteToken(request.getUserId());
+			redisTokenService.deleteToken(request.getUserId());
 			
 			   return new LogoutResponse("Logout successful");
 		}
