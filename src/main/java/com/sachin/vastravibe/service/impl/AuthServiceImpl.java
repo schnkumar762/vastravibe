@@ -1,6 +1,7 @@
 package com.sachin.vastravibe.service.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.sachin.vastravibe.dto.LoginResponse;
 import com.sachin.vastravibe.dto.LogoutRequest;
 import com.sachin.vastravibe.dto.LogoutResponse;
+import com.sachin.vastravibe.dto.SessionRequest;
+import com.sachin.vastravibe.dto.SessionResponse;
 import com.sachin.vastravibe.dto.SignupRequest;
 import com.sachin.vastravibe.dto.SignupResponse;
 import com.sachin.vastravibe.entity.User;
@@ -103,6 +106,21 @@ public class AuthServiceImpl implements AuthService {
 			redisTokenService.deleteToken(request.getUserId());
 			
 			   return new LogoutResponse("Logout successful");
+		}
+@Override
+		public SessionResponse session(SessionRequest request) {
+			  String userId = request.getId();
+
+			    String token = redisTokenService.getToken(userId);
+
+			    boolean active = token != null && !token.isBlank();
+
+			    return new SessionResponse(userId, active,new HashMap<>(), 
+			            new HashMap<>(),
+			            new HashMap<>(),
+			            new HashMap<>(),
+			            new HashMap<>(),
+			            new HashMap<>());
 		}
 
 	

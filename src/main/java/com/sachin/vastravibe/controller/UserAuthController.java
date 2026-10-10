@@ -1,6 +1,7 @@
 package com.sachin.vastravibe.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,8 @@ import com.sachin.vastravibe.dto.LoginRequest;
 import com.sachin.vastravibe.dto.LoginResponse;
 import com.sachin.vastravibe.dto.LogoutRequest;
 import com.sachin.vastravibe.dto.LogoutResponse;
+import com.sachin.vastravibe.dto.SessionRequest;
+import com.sachin.vastravibe.dto.SessionResponse;
 import com.sachin.vastravibe.dto.SignupRequest;
 import com.sachin.vastravibe.dto.SignupResponse;
 import com.sachin.vastravibe.service.AuthService;
@@ -49,4 +52,13 @@ public class UserAuthController {
 		  return ResponseEntity.ok(new ApiResponse<>("success", "Logged out successfully", response));
 	  }
 	  
-}
+	  @GetMapping("/session")
+	  public ResponseEntity<ApiResponse<SessionResponse>> session(@RequestBody SessionRequest request){
+		  SessionResponse response = authService.session(request);
+		return ResponseEntity.ok(new ApiResponse<>("success","done",response));
+	  }
+	  }
+	  
+	  
+	  
+
