@@ -66,7 +66,6 @@ public class AuthServiceImpl implements AuthService {
 
 	         return new LoginResponse(
 	                 user.getId(),
-	                 user.getFirstName(),
 	                 user.getEmail(),
 	                 token
 	                 );
@@ -83,7 +82,6 @@ public class AuthServiceImpl implements AuthService {
 
 	      User user = new User();
 	      user.setCreatedAt(LocalDateTime.now());
-	      user.setFirstName(request.getFirstName());
 	      user.setEmail(request.getEmail());
 	      user.setPhone(request.getPhone());
 	      user.setPassword(passwordEncoder.encode(request.getPassword()));
@@ -94,7 +92,6 @@ public class AuthServiceImpl implements AuthService {
 
 	      return new SignupResponse(
 	              savedUser.getId(),
-	              savedUser.getFirstName(),
 	              savedUser.getEmail(),
 	              savedUser.getPhone()
 	              

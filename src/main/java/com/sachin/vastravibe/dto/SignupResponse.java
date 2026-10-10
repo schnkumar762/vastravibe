@@ -9,7 +9,6 @@ import lombok.Data;
 public class SignupResponse {
 
     private Long id;
-    private String firstName;
     private String email;
     private String phone;
    
