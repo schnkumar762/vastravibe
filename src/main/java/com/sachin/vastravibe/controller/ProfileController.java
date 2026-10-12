@@ -44,7 +44,7 @@ public class ProfileController {
     // Read by ID
     @GetMapping("/{id}")
     public ResponseEntity<ProfileDto> getProfileById(
-            @PathVariable Long id) {
+            @PathVariable("id") Long id) {
 
         return ResponseEntity.ok(profileService.getProfileById(id));
     }
@@ -52,7 +52,7 @@ public class ProfileController {
     // Update
     @PutMapping("/{id}")
     public ResponseEntity<ProfileDto> updateProfile(
-            @PathVariable Long id,
+            @PathVariable("id") Long id,
             @RequestBody ProfileDto profileDto) {
 
         return ResponseEntity.ok(
@@ -62,7 +62,7 @@ public class ProfileController {
     // Delete by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProfileById(
-            @PathVariable Long id) {
+            @PathVariable("id") Long id) {
 
         profileService.deleteProfileById(id);
         return ResponseEntity.noContent().build();
