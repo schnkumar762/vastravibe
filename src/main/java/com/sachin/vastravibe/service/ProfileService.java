@@ -22,5 +22,11 @@ public interface ProfileService {
 
     // Delete all
     void deleteAllProfiles();
+    
+    //from userid
+    ProfileDto getProfileByUserId(Long userId);
+    
+    
+  
 
 }

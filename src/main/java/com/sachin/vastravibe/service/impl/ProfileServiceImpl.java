@@ -87,4 +87,15 @@ public class ProfileServiceImpl implements ProfileService {
     public void deleteAllProfiles() {
         profileRepository.deleteAll();
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+   public  ProfileDto getProfileByUserId(Long userId) {
+    	 Profile profile = profileRepository.findByUserId(userId)
+    	            .orElseThrow(() ->
+    	                    new RuntimeException("Profile not found for userId: " + userId)
+    	            );
+
+    	    return ProfileMapper.mapToProfileDto(profile);
+    }
 }

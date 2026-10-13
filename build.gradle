@@ -50,6 +50,12 @@ dependencies {
 	    // Testing
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	//dotenv
+	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+	
+	// Cloudinary
+implementation 'com.cloudinary:cloudinary-http5:2.4.0'
 }
 
 tasks.named('test') {

@@ -21,3 +21,9 @@ These additional references should also help you:
 
 * [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)
 
+
+
+API	Request body	Result
+POST /api/v1/images/upload	multipart/form-data → file	Cloudinary ka secure_url
+PUT /api/v1/profiles/{id}	JSON → name, DOB, gender, profileImageUrl	Updated profile
+POST /api/v1/products	JSON → product details, imageUrl	Created product
