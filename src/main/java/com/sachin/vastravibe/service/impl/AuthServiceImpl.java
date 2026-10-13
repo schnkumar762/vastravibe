@@ -10,7 +10,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.sachin.vastravibe.dto.LoginResponse;
-import com.sachin.vastravibe.dto.LogoutRequest;
 import com.sachin.vastravibe.dto.LogoutResponse;
 
 import com.sachin.vastravibe.dto.SessionResponse;
@@ -112,10 +111,16 @@ public class AuthServiceImpl implements AuthService {
 	  }
 
 		@Override
-		public LogoutResponse logout(LogoutRequest request) {
-			redisTokenService.deleteToken(request.getUserId());
-			
-			   return new LogoutResponse("Logout successful");
+		public LogoutResponse logout(String token) {
+		    String userId = redisTokenService.getUserIdByToken(token);
+
+		    if (userId == null || userId.isBlank()) {
+		        throw new BadCredentialsException("Invalid or expired session");
+		    }
+
+		    redisTokenService.deleteToken(userId);
+
+		    return new LogoutResponse("Logout successful");
 		}
 		
 		@Override

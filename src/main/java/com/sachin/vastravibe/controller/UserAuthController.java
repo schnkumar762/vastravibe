@@ -111,7 +111,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sachin.vastravibe.dto.ApiResponse;
 import com.sachin.vastravibe.dto.LoginRequest;
 import com.sachin.vastravibe.dto.LoginResponse;
-import com.sachin.vastravibe.dto.LogoutRequest;
+
 import com.sachin.vastravibe.dto.LogoutResponse;
 import com.sachin.vastravibe.dto.SessionResponse;
 import com.sachin.vastravibe.dto.SignupRequest;
@@ -151,9 +151,11 @@ public class UserAuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<LogoutResponse>> logout(
-            @RequestBody LogoutRequest request) {
+            @RequestHeader("Authorization") String authorization) {
 
-        LogoutResponse response = authService.logout(request);
+        String token = authorization.replace("Bearer ", "");
+
+        LogoutResponse response = authService.logout(token);
 
         return ResponseEntity.ok(
                 new ApiResponse<>("success", "Logged out successfully", response));

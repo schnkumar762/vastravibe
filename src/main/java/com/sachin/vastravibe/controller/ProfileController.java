@@ -7,12 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.security.authentication.BadCredentialsException;
+import com.sachin.vastravibe.redis.RedisTokenService;
 
 import com.sachin.vastravibe.dto.ProfileDto;
 import com.sachin.vastravibe.service.ProfileService;
@@ -25,8 +28,9 @@ import lombok.AllArgsConstructor;
 public class ProfileController {
 
     private final ProfileService profileService;
+    private final RedisTokenService redisTokenService;
 
-    // Create
+    // Create profile
     @PostMapping
     public ResponseEntity<ProfileDto> createProfile(
             @RequestBody ProfileDto profileDto) {
@@ -35,43 +39,75 @@ public class ProfileController {
         return new ResponseEntity<>(savedProfile, HttpStatus.CREATED);
     }
 
-    // Read all
+    // Read all profiles
     @GetMapping
     public ResponseEntity<List<ProfileDto>> getAllProfiles() {
         return ResponseEntity.ok(profileService.getAllProfiles());
     }
 
-    // Read by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ProfileDto> getProfileById(
-            @PathVariable("id") Long id) {
+    // Read logged-in user's profile
+    @GetMapping("/me")
+    public ResponseEntity<ProfileDto> getMyProfile(
+            @RequestHeader("Authorization") String authorization) {
 
-        return ResponseEntity.ok(profileService.getProfileById(id));
+        String token = authorization.replaceFirst("(?i)^Bearer\\s+", "");
+
+        String userId = redisTokenService.getUserIdByToken(token);
+
+        if (userId == null || userId.isBlank()) {
+            throw new BadCredentialsException("Invalid or expired session");
+        }
+
+        ProfileDto profile = profileService.getProfileByUserId(Long.valueOf(userId));
+
+        return ResponseEntity.ok(profile);
     }
 
-    // Update
-    @PutMapping("/{id}")
-    public ResponseEntity<ProfileDto> updateProfile(
-            @PathVariable("id") Long id,
+ // Update logged-in user's profile
+    @PutMapping("/me")
+    public ResponseEntity<ProfileDto> updateMyProfile(
+            @RequestHeader("Authorization") String authorization,
             @RequestBody ProfileDto profileDto) {
 
-        return ResponseEntity.ok(
-                profileService.updateProfile(id, profileDto));
+        String token = authorization.replaceFirst("(?i)^Bearer\\s+", "");
+        String userId = redisTokenService.getUserIdByToken(token);
+
+        if (userId == null || userId.isBlank()) {
+            throw new BadCredentialsException("Invalid or expired session");
+        }
+
+        ProfileDto currentProfile =
+                profileService.getProfileByUserId(Long.valueOf(userId));
+
+        ProfileDto updatedProfile =
+                profileService.updateProfile(currentProfile.getId(), profileDto);
+
+        return ResponseEntity.ok(updatedProfile);
     }
 
-    // Delete by ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProfileById(
-            @PathVariable("id") Long id) {
+    // Delete logged-in user's profile
+    @DeleteMapping("/me")
+    public ResponseEntity<Void> deleteMyProfile(
+            @RequestHeader("Authorization") String authorization) {
 
-        profileService.deleteProfileById(id);
+        String token = authorization.replaceFirst("(?i)^Bearer\\s+", "");
+        String userId = redisTokenService.getUserIdByToken(token);
+
+        if (userId == null || userId.isBlank()) {
+            throw new BadCredentialsException("Invalid or expired session");
+        }
+
+        ProfileDto currentProfile =
+                profileService.getProfileByUserId(Long.valueOf(userId));
+
+        profileService.deleteProfileById(currentProfile.getId());
+
         return ResponseEntity.noContent().build();
     }
 
-    // Delete all
+    // Delete all profiles
     @DeleteMapping
     public ResponseEntity<Void> deleteAllProfiles() {
-
         profileService.deleteAllProfiles();
         return ResponseEntity.noContent().build();
     }
